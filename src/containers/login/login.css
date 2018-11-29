@@ -1,0 +1,41 @@
+.frame1 {
+  background-color: #373e4a;
+  height: 300px;
+}
+
+.frame2 {
+  background-color: #303641;
+  height: 450px;
+  color: white;
+}
+.input {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  color: white;
+}
+.inputDiv {
+  background-color: #373e4a;
+}
+.label {
+  border-right: 1px solid white;
+}
+.login-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0.5px solid #373e4a;
+}
+
+.bottom-field {
+  margin-top: 30px;
+}
+a {
+  color: white;
+}
+.arrow-down {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-top: 30px solid #373e4a;
+  left:48%
+}
