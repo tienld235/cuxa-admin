@@ -4,7 +4,7 @@ class LogoutButton extends Component{
     render(){
         return(
             <div>
-                Haha
+                
             </div>
         )
     }
