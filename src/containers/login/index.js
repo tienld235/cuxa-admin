@@ -7,37 +7,54 @@ import LoginButton from "../../components/LoginButton";
 import arrowIcon from "../../assets/images/right-arrow.png";
 import CustomInput from "../../components/CustomInput";
 import emailIcon from "../../assets/images/envelope.png";
-import authProvider from "../../helpers/authProvider";
+import Axios from "axios";
+import URL from "../../constants/url";
 
 class Login extends Component {
   state = {
     isForget: false,
     email: "",
-    password:"",
+    password: ""
   };
 
   onForgetPasswordClick = () => {
     this.setState({ isForget: !this.state.isForget });
   };
 
-  doLogin=(e)=>{
-    const {password, email} = this.state;
+  doLogin = e => {
+    const { password, email } = this.state;
+    const { history } = this.props;
     e.preventDefault();
-    authProvider(email, password);
-    this.props.history.push("/");
-  }
+    Axios.post(
+      `${URL}/api/auth`,
+      {},
+      {
+        headers: {
+          Authorization: `Basic ${btoa(`${email}:${password}`)}`
+        }
+      }
+    )
+      .then(rs => {
+        localStorage.setItem("access_token", rs.data.token);
+        history.push("/");
+      })
+      .catch(error => console.log(error));
+  };
 
-  onUsernameChange=(email)=>{
-    this.setState({email})
-  }
+  onUsernameChange = email => {
+    this.setState({ email });
+  };
 
-  onPasswordChange=(password)=>{
-    this.setState({password});
-  }
+  onPasswordChange = password => {
+    this.setState({ password });
+  };
 
+  componentDidMount() {
+    console.log("token", localStorage.getItem("access_token"));
+  }
 
   render() {
-    const {email, password} = this.state;
+    const { email, password } = this.state;
     return (
       <div className="container-fluid">
         <div className="frame1 row text-light align-items-center">
@@ -47,13 +64,14 @@ class Login extends Component {
           </div>
         </div>
 
-        <div class="arrow-down" />
+        <div className="arrow-down" />
 
         <div className="frame2 row align-items-center">
           {this.state.isForget === false ? (
             <div className="col-4 offset-4">
               <form onSubmit={this.doLogin}>
                 <CustomInput
+                  type="text"
                   images={usernameIcon}
                   alt={"username"}
                   name="username"
@@ -63,6 +81,7 @@ class Login extends Component {
                 />
 
                 <CustomInput
+                  type="password"
                   images={passwordIcon}
                   alt={"password"}
                   name="password"
@@ -74,13 +93,13 @@ class Login extends Component {
               </form>
 
               <div className="bottom-field text-center">
-                <a href="#" onClick={this.onForgetPasswordClick} className="">
+                <span onClick={this.onForgetPasswordClick} className="">
                   <span>Quên mật khẩu?</span>
-                </a>
+                </span>
                 <br />
-                <a href="#" className="">
+                <p className="">
                   <span>Privacy Policy</span>
-                </a>
+                </p>
               </div>
             </div>
           ) : (
@@ -92,16 +111,16 @@ class Login extends Component {
                 placeholder={"Email"}
               />
 
-              <LoginButton title={"Gửi Email"} images={arrowIcon}/>
+              <LoginButton title={"Gửi Email"} images={arrowIcon} />
 
               <div className="bottom-field text-center">
-                <a href="#" onClick={this.onForgetPasswordClick} className="">
+                <p onClick={this.onForgetPasswordClick} className="">
                   <span>Quay lại trang đăng nhập</span>
-                </a>
+                </p>
                 <br />
-                <a href="#" className="">
+                <p className="">
                   <span>Privacy Policy</span>
-                </a>
+                </p>
               </div>
             </div>
           )}

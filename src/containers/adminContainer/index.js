@@ -1,21 +1,35 @@
 import React, { Component } from "react";
-import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
+import { Admin, Resource, ListGuesser, EditGuesser, fetchUtils} from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import UserList from "../../components/UserList/UserList";
 import AdminPanel from "../../components/adminpanel";
 import { createMuiTheme } from "@material-ui/core/styles";
-import LogoutButton from "../../components/LogoutButton";
+import Logout from "../logout";
 import { PostList } from "../../components/PostList";
 import Login from "../login";
+import URL from "../../constants/url";
 
-const dataProvider = jsonServerProvider("http://jsonplaceholder.typicode.com");
+
+const httpClient = (url, options = {}) => {
+  options.user = {
+      authenticated: true,
+      token: `Bearer ${localStorage.getItem("access_token")}`
+  }
+  return fetchUtils.fetchJson(url, options);
+}
+
+const dataProvider = jsonServerProvider(URL, httpClient);
 const theme = createMuiTheme({
   palette: { type: "dark" }
 });
 
+
 class AdminContainer extends Component {
   componentDidMount() {
-    console.log(localStorage.getItem("access_token"));
+    console.log("token của User", localStorage.getItem("access_token"));
+    if(localStorage.getItem("access_token") === null){
+      this.props.history.push("/login");
+    }
   }
 
   render() {
@@ -26,11 +40,10 @@ class AdminContainer extends Component {
         dashboard={AdminPanel}
         theme={theme}
         loginPage={Login}
-        logoutButton={LogoutButton}
       >
         <Resource
-          name="users"
-          options={{ label: "Moderate Room" }}
+          name="api/users"
+          options={{ label: "Moderate Users" }}
           list={UserList}
           edit={EditGuesser}
         />
@@ -43,6 +56,11 @@ class AdminContainer extends Component {
           name="feedbacks"
           options={{ label: "Feedback View" }}
           list={ListGuesser}
+        />
+        <Resource
+          name="logout"
+          options={{label: "Logout"}}
+          list={Logout}
         />
       </Admin>
     );

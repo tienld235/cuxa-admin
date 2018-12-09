@@ -17,6 +17,7 @@ class CustomInput extends Component {
           />
         </div>
         <input
+          type={this.props.type}
           name={this.props.name}
           className="form-control col-9 input"
           placeholder={this.props.placeholder}
