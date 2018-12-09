@@ -8,7 +8,7 @@ import Logout from "../logout";
 import { PostList } from "../../components/PostList";
 import Login from "../login";
 import URL from "../../constants/url";
-
+import dataProvider from './dataProvider';
 
 const httpClient = (url, options = {}) => {
   options.user = {
@@ -18,7 +18,7 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 }
 
-const dataProvider = jsonServerProvider(URL, httpClient);
+// const dataProvider = jsonServerProvider(URL, httpClient);
 const theme = createMuiTheme({
   palette: { type: "dark" }
 });
@@ -42,7 +42,7 @@ class AdminContainer extends Component {
         loginPage={Login}
       >
         <Resource
-          name="api/users"
+          name="users"
           options={{ label: "Moderate Users" }}
           list={UserList}
           edit={EditGuesser}
