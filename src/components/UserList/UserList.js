@@ -1,12 +1,12 @@
 import React from "react";
-import { List, Datagrid, TextField, EmailField, EditButton} from "react-admin";
+import { List, Datagrid, TextField, EmailField, EditButton, ImageField} from "react-admin";
+import AvatarField from "../AvatarField";
 
 export const UserList = props => (
   <List {...props}>
     <Datagrid rowClick="edit">
-      <TextField source="id" />
+      <AvatarField source="picture" title="name"/>
       <TextField source="name" />
-      <TextField source="picture" />
       <EmailField source="email" />
       <EditButton/>
     </Datagrid>
