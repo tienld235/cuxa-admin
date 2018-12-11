@@ -1,33 +1,41 @@
 import React, { Component } from "react";
-import { Admin, Resource, ListGuesser,fetchUtils} from "react-admin";
+import {
+  Admin,
+  Resource,
+  ListGuesser,
+  EditGuesser,
+  fetchUtils
+} from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
 import UserList from "../../components/UserList/UserList";
 import AdminPanel from "../../components/adminpanel";
 import { createMuiTheme } from "@material-ui/core/styles";
 import Logout from "../logout";
 import Login from "../login";
-import dataProvider from './dataProvider';
-import RoomList from "../../components/RoomList";
+import URL from "../../constants/url";
+import dataProvider from "./dataProvider";
+import EmailsList from "../../components/EmailsList/EmailsList";
+import NotificationsList from "../../components/NotificationsList/NotificationsList";
+import UtilitiesList from "../../components/UtilitiesList/UtilitiesList";
 import UserDetails from "../../components/UserDetails";
-import RoomDetails from "../../components/RoomDetails";
 
 const httpClient = (url, options = {}) => {
   options.user = {
-      authenticated: true,
-      token: `Bearer ${localStorage.getItem("access_token")}`
-  }
+    authenticated: true,
+    token: `Bearer ${localStorage.getItem("access_token")}`
+  };
   return fetchUtils.fetchJson(url, options);
-}
+};
 
 // const dataProvider = jsonServerProvider(URL, httpClient);
 const theme = createMuiTheme({
   palette: { type: "light" }
 });
 
-
 class AdminContainer extends Component {
   componentDidMount() {
     console.log("token của User", localStorage.getItem("access_token"));
-    if(localStorage.getItem("access_token") === null){
+    if (localStorage.getItem("access_token") === null) {
       this.props.history.push("/login");
     }
   }
@@ -43,26 +51,31 @@ class AdminContainer extends Component {
       >
         <Resource
           name="users"
-          options={{ label: "Moderate Users" }}
+          options={{ label: "Manage Users" }}
           list={UserList}
           edit={UserDetails}
         />
         <Resource
-          name="rooms"
-          options={{ label: "Moderate Rooms" }}
-          list={RoomList}
-          edit={RoomDetails}
+          name="emails"
+          options={{ label: "Emails" }}
+          list={EmailsList}
+        />
+        <Resource
+          name="notifications"
+          options={{ label: "Notifications" }}
+          list={NotificationsList}
+        />
+        <Resource
+          name="utilities"
+          options={{ label: "Utilities" }}
+          list={UtilitiesList}
         />
         <Resource
           name="feedbacks"
           options={{ label: "Feedback View" }}
           list={ListGuesser}
         />
-        <Resource
-          name="logout"
-          options={{label: "Logout"}}
-          list={Logout}
-        />
+        <Resource name="logout" options={{ label: "Logout" }} list={Logout} />
       </Admin>
     );
   }
