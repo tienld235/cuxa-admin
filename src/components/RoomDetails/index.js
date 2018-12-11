@@ -11,6 +11,10 @@ class RoomDetails extends Component {
   };
 
   componentDidMount() {
+    this.loadDetails();
+  }
+
+  loadDetails = () => {
     const { id } = this.props;
     Axios.get(URLAdmin + "/api/rooms/" + id, {
       headers: {
@@ -34,7 +38,61 @@ class RoomDetails extends Component {
         });
       })
       .catch(error => console.log(error));
+  };
+
+  componentDidUpdate(prevProps, prevStates) {
+    const { room } = this.state;
+    if (room.isVerified !== prevStates.room.isVerified) {
+      this.setState({ utilities: [] });
+      this.loadDetails();
+    }
   }
+  sendDeleteNoti = () => {
+    const { room } = this.state;
+    const { history } = this.props;
+    Axios.post(
+      URLAdmin + "/api/notifications",
+      {
+        receiver: room.landlord.id,
+        title: "Phòng " + room.name + " đã bị xóa!",
+        message: "Phòng " + room.name + " của bạn đã bị xóa!",
+        content:
+          "<p>Chào bạn, trong quá trình cân nhắc và xem xét, chúng tôi" +
+          "nhận thấy phòng của bạn không đáp ứng được những điều kiện trong chính sách của chúng tôi." +
+          " Vì vậy, đội ngũ admin đã quyết định xóa phòng của bạn. Thân!</p>"
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`
+        }
+      }
+    )
+      .then(response => console.log(response.data))
+      .then(history.push("/rooms"))
+      .catch(error => console.log(error));
+  };
+  deleteRoom = () => {
+    const { room } = this.state;
+    window.confirm("Are you sure about this?");
+    Axios.delete(URLAdmin + "/api/rooms/" + room.id, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+      }
+    })
+      .then(this.sendDeleteNoti())
+      .catch(error => console.log(error));
+  };
+  verifyRoom = () => {
+    const { room } = this.state;
+    Axios.get(URLAdmin +"/api/rooms/"+ room.id + "/verify", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+      }
+    })
+      .then(response => this.setState({ room: response.data }))
+      .then(alert("Success"))
+      .catch(error => console.log(error));
+  };
 
   render() {
     const { room, utilities } = this.state;
@@ -109,7 +167,7 @@ class RoomDetails extends Component {
                     <input
                       type="checkbox"
                       className="form-check-input"
-                      checked={true}
+                      defaultChecked={true}
                     />
                     <label className="form-control">{item}</label>
                   </div>
@@ -120,17 +178,29 @@ class RoomDetails extends Component {
         </div>
         <center className="mt-4">
           {room.isVerified === false ? (
-            <button type="button" class="btn btn-primary btn-lg mr-2" onClick={this.verifyRoom}>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg mr-2"
+              onClick={this.verifyRoom}
+            >
               Verify
             </button>
           ) : (
-            <button type="button" class="btn btn-success btn-lg mr-2">
+            <button
+              type="button"
+              className="btn btn-success btn-lg mr-2"
+              onClick={this.verifyRoom}
+            >
               Verified
             </button>
           )}
 
-          <button type="button" class="btn btn-danger btn-lg">
-            Large button
+          <button
+            type="button"
+            className="btn btn-danger btn-lg"
+            onClick={this.deleteRoom}
+          >
+            Xoá phòng
           </button>
         </center>
       </div>
