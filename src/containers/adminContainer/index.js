@@ -18,6 +18,7 @@ import dataProvider from "./dataProvider";
 import EmailsList from "../../components/EmailsList/EmailsList";
 import NotificationsList from "../../components/NotificationsList/NotificationsList";
 import UtilitiesList from "../../components/UtilitiesList/UtilitiesList";
+import EmailDetails from "../../components/EmailDetails";
 
 const httpClient = (url, options = {}) => {
   options.user = {
@@ -29,7 +30,7 @@ const httpClient = (url, options = {}) => {
 
 // const dataProvider = jsonServerProvider(URL, httpClient);
 const theme = createMuiTheme({
-  palette: { type: "dark" }
+  palette: { type: "light" }
 });
 
 class AdminContainer extends Component {
@@ -60,6 +61,7 @@ class AdminContainer extends Component {
           name="emails"
           options={{ label: "Emails" }}
           list={EmailsList}
+          edit={EmailDetails}
         />
         <Resource
           name="notifications"
