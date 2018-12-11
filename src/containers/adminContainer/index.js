@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { Admin, Resource, ListGuesser, EditGuesser, fetchUtils} from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { Admin, Resource, ListGuesser,fetchUtils} from "react-admin";
 import UserList from "../../components/UserList/UserList";
 import AdminPanel from "../../components/adminpanel";
 import { createMuiTheme } from "@material-ui/core/styles";
 import Logout from "../logout";
-import { PostList } from "../../components/PostList";
 import Login from "../login";
-import URL from "../../constants/url";
 import dataProvider from './dataProvider';
+import RoomList from "../../components/RoomList";
+import UserDetails from "../../components/UserDetails";
+import RoomDetails from "../../components/RoomDetails";
 
 const httpClient = (url, options = {}) => {
   options.user = {
@@ -20,7 +20,7 @@ const httpClient = (url, options = {}) => {
 
 // const dataProvider = jsonServerProvider(URL, httpClient);
 const theme = createMuiTheme({
-  palette: { type: "dark" }
+  palette: { type: "light" }
 });
 
 
@@ -45,12 +45,13 @@ class AdminContainer extends Component {
           name="users"
           options={{ label: "Moderate Users" }}
           list={UserList}
-          edit={EditGuesser}
+          edit={UserDetails}
         />
         <Resource
-          name="posts"
-          options={{ label: "Moderate Report" }}
-          list={PostList}
+          name="rooms"
+          options={{ label: "Moderate Rooms" }}
+          list={RoomList}
+          edit={RoomDetails}
         />
         <Resource
           name="feedbacks"

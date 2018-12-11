@@ -1,2 +1,2 @@
-const URL = "https://cx.emmasoft.com.vn";
-export default URL;
+const URLAdmin = "https://cx.emmasoft.com.vn";
+export default URLAdmin;
