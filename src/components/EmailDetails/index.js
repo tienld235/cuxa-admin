@@ -17,7 +17,34 @@ class EmailDetails extends Component {
   render() {
     console.log(this.state.email.id);
     const { email } = this.state;
-    return <div>{email.id}</div>;
+    return (
+      <div className="container-fluid">
+        <table id="example" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Email Id</th>
+              <th>Subject</th>
+              <th>Content</th>
+              <th>From</th>
+              <th>To user</th>
+              <th>Created date</th>
+              <th>Updated date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{email.id}</td>
+              <td>{email.subject}</td>
+              <td>{email.content}</td>
+              <td>{email.fromEmail}</td>
+              <td>{email.toUser}</td>
+              <td>{email.createdAt}</td>
+              <td>{email.updatedAt}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 }
 
