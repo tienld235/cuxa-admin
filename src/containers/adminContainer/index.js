@@ -51,7 +51,7 @@ class AdminContainer extends Component {
       >
         <Resource
           name="users"
-          options={{ label: "Manage Users" }}
+          options={{ label: "Quản lý người dùng" }}
           list={UserList}
           edit={UserDetails}
         />
@@ -62,20 +62,24 @@ class AdminContainer extends Component {
         />
         <Resource
           name="notifications"
-          options={{ label: "Notifications" }}
+          options={{ label: "Quản lý thông báo" }}
           list={NotificationsList}
         />
         <Resource
           name="utilities"
-          options={{ label: "Utilities" }}
+          options={{ label: "Tiện ích" }}
           list={UtilitiesList}
         />
         <Resource
           name="feedbacks"
-          options={{ label: "Feedback View" }}
+          options={{ label: "Feedback" }}
           list={ListGuesser}
         />
-        <Resource name="logout" options={{ label: "Logout" }} list={Logout} />
+        <Resource
+          name="logout"
+          options={{ label: "Đăng xuất" }}
+          list={Logout}
+        />
       </Admin>
     );
   }
